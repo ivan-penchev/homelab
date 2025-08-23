@@ -1,0 +1,7 @@
+---
+- name: "Proxmox VE 9 Post-Install Configuration"
+  hosts: proxmox_nodes
+  become: true
+  gather_facts: false
+  roles:
+    - role: proxmox_post_install

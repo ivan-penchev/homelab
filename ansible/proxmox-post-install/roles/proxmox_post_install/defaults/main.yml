@@ -1,0 +1,32 @@
+---
+# --- Repository Management ---
+# Disable legacy (.list) APT sources and migrate to deb822 (.sources) format
+pve_migrate_to_deb822: true
+
+# Remove the pve-enterprise repository file to avoid errors
+pve_disable_enterprise_repo: true
+
+# Add and enable the pve-no-subscription repository for updates
+pve_enable_no_subscription_repo: true
+
+# Add the Ceph 'no-subscription' repository for distributed storage
+pve_add_ceph_repo: true
+
+# Add the (disabled by default) pvetest repository for testing new features
+pve_add_pvetest_repo: true
+
+# --- System Customization ---
+# Disable the "No valid subscription" nag screen on login
+pve_disable_subscription_nag: true
+
+# --- Service Management ---
+# Set to true to manage HA service states (recommended for single nodes)
+pve_manage_ha_services: true
+# Set the desired state for HA services. 'false' disables them to save resources.
+pve_ha_services_enabled: false
+
+# --- System Maintenance ---
+# Perform a full system update and distribution upgrade
+pve_update_system: true
+# Reboot the node after all tasks are completed
+pve_reboot_if_needed: true

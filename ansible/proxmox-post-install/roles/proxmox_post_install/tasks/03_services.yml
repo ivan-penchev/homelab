@@ -1,0 +1,10 @@
+---
+- name: "Set desired state for HA services"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: "{{ pve_ha_services_enabled }}"
+    state: "{{ 'started' if pve_ha_services_enabled else 'stopped' }}"
+  loop:
+    - pve-ha-lrm
+    - pve-ha-crm
+    - corosync

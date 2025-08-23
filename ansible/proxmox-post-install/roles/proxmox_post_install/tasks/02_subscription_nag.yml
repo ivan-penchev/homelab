@@ -1,0 +1,15 @@
+---
+- name: "Disable subscription nag via APT hook"
+  ansible.builtin.template:
+    src: no-nag-script.j2
+    dest: /etc/apt/apt.conf.d/no-nag-script
+    owner: root
+    group: root
+    mode: '0644'
+
+## Needed because the APT hook is post APT install,
+## so we need to trigger it with some APT command.
+- name: "Re-install proxmox-widget-toolkit to apply nag removal"
+  ansible.builtin.command:
+    cmd: apt-get install --reinstall -y proxmox-widget-toolkit
+  changed_when: false

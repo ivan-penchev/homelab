@@ -1,0 +1,37 @@
+---
+- name: "Block: Pre-flight checks"
+  block:
+    - name: "Check PVE version"
+      ansible.builtin.command: pveversion
+      register: pve_version_output
+      changed_when: false
+      check_mode: false
+
+    - name: "Fail if PVE version is not 9.x"
+      ansible.builtin.fail:
+        msg: "This playbook is designed for Proxmox VE 9.x only. Found version {{ pve_version_output.stdout.split('/')[1] }}"
+      when: "not pve_version_output.stdout.split('/')[1].startswith('9.')"
+  tags:
+    - always
+
+- name: "Include repository management tasks"
+  ansible.builtin.include_tasks: 01_repositories.yml
+  tags:
+    - pve_repositories
+
+- name: "Include subscription nag removal tasks"
+  ansible.builtin.include_tasks: 02_subscription_nag.yml
+  when: pve_disable_subscription_nag
+  tags:
+    - pve_nag
+
+- name: "Include service management tasks"
+  ansible.builtin.include_tasks: 03_services.yml
+  when: pve_manage_ha_services
+  tags:
+    - pve_services
+
+- name: "Include system update and reboot tasks"
+  ansible.builtin.include_tasks: 04_system_update.yml
+  tags:
+    - pve_update
