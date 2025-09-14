@@ -1,0 +1,56 @@
+proxmox_api_url          = "https://<your-proxmox-ip>:8006/api2/json"
+proxmox_api_token_id     = "terraform@pve!mytoken"
+proxmox_api_token_secret = "your-secret-token"
+proxmox_node             = "pve"
+
+lxc_containers = [
+  {
+    hostname       = "nginx-server"
+    ostemplate     = "local:vztmpl/debian-12-standard_12.2-1_amd64.tar.zst"
+    password       = "a-very-secure-password"
+    cores          = 2
+    memory         = 1024
+    storage        = "local-lvm"
+    disk_size      = "10G"
+    network = {
+      name   = "eth0"
+      bridge = "vmbr0"
+      ip     = "dhcp"
+    }
+    tags = ["web", "nginx"]
+  },
+  {
+    hostname       = "db-server"
+    ostemplate     = "local:vztmpl/debian-12-standard_12.2-1_amd64.tar.zst"
+    ssh_public_key = "ssh-rsa AAAA..."
+    cores          = 1
+    memory         = 2048
+    storage        = "local-lvm"
+    disk_size      = "20G"
+    network = {
+      name   = "eth0"
+      bridge = "vmbr0"
+      ip     = "192.168.1.101/24"
+      gw     = "192.168.1.1"
+    }
+    tags = ["database"]
+  }
+]
+
+# virtual_machines = [
+#   {
+#     name      = "ubuntu-vm"
+#     clone     = "ubuntu-2204-template"
+#     cores     = 2
+#     memory    = 4096
+#     storage   = "local-lvm"
+#     disk_size = "50G"
+#     network = {
+#       model  = "virtio"
+#       bridge = "vmbr0"
+#     }
+#     ipconfig0 = "ip=dhcp"
+#     ciuser    = "ubuntu"
+#     sshkeys   = "ssh-rsa AAAA..."
+#   }
+# ]

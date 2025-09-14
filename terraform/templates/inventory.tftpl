@@ -1,0 +1,7 @@
+[all:vars]
+ansible_user=root
+
+[lxc_hosts]
+%{ for name, lxc in lxcs ~}
+${name} ansible_host=${lxc.ip_address} %{ if lxc.password != null }ansible_ssh_pass='${lxc.password}'%{ endif }
+%{ endfor ~}
